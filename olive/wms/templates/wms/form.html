@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/wms.css' %}" />
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <div id="app">
+            <div class="freeze" v-if="freeze">
+                <img src="{% static 'icon/loader-2-line.svg' %}"><br>Londing...
+            </div>
+            <div class="head" v-if="!select">
+                <div class="go_back" onclick="history.back()">
+                    <img src="{% static 'icon/arrow-go-back-fill.svg' %}">
+                </div>
+                <div>{% block page_title %}{% endblock %}</div>
+            </div>
+            <div class="head" v-else>
+                <div class="go_back" @click="select=false">
+                    <img src="{% static 'icon/arrow-go-back-fill.svg' %}">
+                </div>
+                <div>选择<span v-text="setmode"></span></div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+    {% block script %}{% endblock %}
+</html>

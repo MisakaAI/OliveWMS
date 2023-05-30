@@ -1,0 +1,445 @@
+@charset "utf-8";
+/* CSS Document */
+
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #555;
+    background-color: #eee;
+    width: 100%;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #555;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: color 0.25s;
+    -moz-transition: color 0.25s;
+    -webkit-transition: color 0.25s;
+    -o-transition: color 0.25s;
+}
+
+button {
+    transition: background-color 0.25s;
+    -moz-transition: background-color 0.25s;
+    -webkit-transition: background-color 0.25s;
+    -o-transition: background-color 0.25s;
+}
+
+#app {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.freeze {
+    z-index: 999;
+    position: fixed;
+    background-color: rgba(0,0,0,0.25);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    color: #fff;
+}
+
+.freeze img {
+    animation: rotate 3s infinite linear; /* 设置旋转动画 */
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg); /* 起始位置为0度 */
+    }
+    to {
+        transform: rotate(360deg); /* 终止位置为360度 */
+    }
+}
+
+.head {
+    width: 100%;
+    height: 2.3em;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #555;
+    color: #eee;
+}
+
+.go_back {
+    width: 2.3em;
+    height: 2.3em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.body {
+    width: 100%;
+    max-width: 800px;
+}
+
+.general_box {
+    width: 95%;
+    padding: 10px 2.5% 0 2.5%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.general {
+    width: 75px;
+    height: 110px;
+    margin: 0 2.5px 0 2.5px;
+}
+
+.general_icon {
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 75px;
+    background-color: #aaa;
+}
+
+.general_title {
+    text-align: center;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.func_box {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.func_box a {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.func {
+    width: 90%;
+    padding-left: 1em;
+    font-weight: bold;
+    height: 2.5em;
+    font-size: 1.1em;
+    margin-top: 5px;
+    background-color: #ddd;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.func_name {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.copyright {
+    margin-top: 10px;
+    font-size: 0.8em;
+    text-align: center;
+    color: #999;
+}
+
+.message {
+    line-height: 2em;
+    color: #fff;
+    text-align: center;
+}
+
+.error {
+    background-color: #aa4849;
+}
+
+.info {
+    background-color: #47a469;
+}
+
+.form {
+    width: 95%;
+    padding: 10px 2.5% 0px 2.5%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.form_title {
+    width: 100%;
+    height: 2em;
+    line-height: 2em;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form_title button {
+    height: 1.8em;
+    border: none;
+    color: #fff;
+    background-color: #777;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_title button:hover {
+    background-color: #999;
+}
+
+.form_body {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form_body input {
+    flex-grow: 1;
+    padding: 0 2.5% 0 2.5%;
+    height: 2.5em;
+    line-height: 2.5em;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    outline: none;
+}
+
+.form_body input:disabled {
+    color: #999;
+    border: 1px solid #bbb;
+    background-color: #ddd;
+}
+
+.form_body button {
+    width: 4.5em;
+    height: 2.6em;
+    background-color: #777777;
+    border: none;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_body img {
+    height: 80%;
+}
+
+.form_info {
+    width: 100%;
+    margin-top: 1em;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.submit {
+    width: 95%;
+    margin-top: 10px;
+    padding: 10px 2.5% 0px 2.5%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.submit button {
+    width: 30%;
+    height: 2.2em;
+    font-size: 1em;
+    border: none;
+}
+
+.button {
+    color: #fff;
+    background-color: #409eff;
+}
+
+.button:hover {
+    background-color: #79bbff;
+}
+
+.push {
+    color: #fff;
+    background-color: #47a469;
+}
+
+
+.push:hover {
+    background-color: #75bb8f;
+}
+
+.delect {
+    border: none;
+    color: #fff;
+    background-color: #b36c6d;
+    font-size: 0.8em;
+    line-height: 2em;
+}
+
+.delect:hover {
+    background-color: #aa4849;
+}
+
+.ok {
+    font-size: 0.8em;
+    color: #fff;
+    background-color: #75bb8f;
+}
+
+.ng {
+    font-size: 0.8em;
+    color: #fff;
+    background-color: #b36c6d;
+}
+
+.list {
+    margin-top: 1em;
+}
+
+.storage_location {
+    width: 100%;
+    margin-top: 10px;
+    height: 2.5em;
+    color: #fff;
+    background-color: #888;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.storage_location:hover {
+    background-color: #666;
+}
+
+.box {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+}
+
+.box_row {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.bow_cell {
+    background-color: #888;
+    color: #fff;
+    margin: 3px;
+    width: 50%;
+    height: 2em;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.bow_cell_none {
+    background-color: #aaa;
+    color: #fff;
+    margin: 3px;
+    width: 50%;
+    height: 2em;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    font-size: 0.8em;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+thead {
+    background-color: #888;
+    color: #fff;
+}
+
+th,
+td {
+    height: 1.7em;
+    line-height: 1.7em;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+tbody tr {
+    background-color: #ddd;
+    border-bottom: solid 1px #fff;
+}
