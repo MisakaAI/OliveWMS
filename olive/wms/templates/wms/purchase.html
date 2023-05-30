@@ -285,6 +285,7 @@
             },
             // 添加到待提交产品列表
             add(event) {
+                this.message.status=false
                 for (i in this.value) {
                     if (this.value[i] == "") {
                         this.message.status=true

@@ -6,13 +6,6 @@
 {% csrf_token %}
 <!-- 主页面 -->
 <div class="body" v-if="!select">
-    <!-- 单号 -->
-    <!-- <div class="form">
-        <div class="form_title">单号</div>
-        <div class="form_body">
-            <input type="text" value="" disabled>
-        </div>
-    </div> -->
     <!-- 错误信息 -->
     <div :class="'message ' + message.type" v-if="message.status" v-text="message.text"></div>
     <!-- 进货单号 -->
@@ -24,26 +17,16 @@
             </button>
         </div>
         <div class="form_body">
-            <input type="text" v-model="order" disabled />
+            <input type="text" v-model="value.order" disabled />
         </div>
     </div>
     <!-- 产品 -->
     <div class="form">
         <div class="form_title">
             <div>产品</div>
-            <button @click="select=true;setmode='产品'">
-                <img src="{% static 'icon/filter-3-line.svg' %}" />&nbsp;选择
-            </button>
         </div>
         <div class="form_body">
             <input type="text" v-model="value.item" disabled />
-        </div>
-    </div>
-    <!-- 单价 -->
-    <div class="form">
-        <div class="form_title">单价</div>
-        <div class="form_body">
-            <input type="number" v-model="value.price" onkeyup="value=value.replace(/\D/g,'')"/>
         </div>
     </div>
     <!-- 数量 -->
@@ -65,19 +48,18 @@
             <input type="text" v-model="value.storage" onkeyup="this.value = this.value.replace(/[^0-9-]|^-(?=.*-)|(?<=-)-/g, '')">
         </div>
     </div>
-    <!-- 功能：添加（添加产品到待提交列表中）、入库（提交到后端） -->
+    <!-- 功能：添加（添加产品到待提交列表中）、出库（提交到后端） -->
     <div class="submit">
         <button class="button" @click="add">添加</button>
-        <button class="push" @click="push">入库</button>
+        <button class="push" @click="push">出库</button>
     </div>
     <!-- 待提交产品列表 -->
     <div class="list">
         <table v-if="item_list.length!=0">
             <thead>
                 <tr>
-                    <th>序号</th>
+                    <th>单号</th>
                     <th>产品</th>
-                    <th>单价</th>
                     <th>数量</th>
                     <th>储位</th>
                     <th>功能</th>
@@ -86,9 +68,8 @@
             <tbody>
                 <template v-for="i,n in item_list">
                 <tr>
-                    <td v-text="n+1"></td>
+                    <td v-text="i.order"></td>
                     <td v-text="i.item"></td>
-                    <td v-text="i.price"></td>
                     <td v-text="i.num"></td>
                     <td v-text="i.storage"></td>
                     <td>
@@ -125,48 +106,21 @@
                 </thead>
                 <tbody>
                     <template v-for="x,y in search_return">
-                        <tr>
-                            <td v-text="y"></td>
-                            <td v-text="x[1]"></td>
-                            <td><template v-for="i in x[2]"><span v-text="i.item"></span><br></template></td>
-                            <td><template v-for="i in x[2]"><span v-text="i.num"></span><br></template></td>
-                            <td>
-                                <button class="set" @click="order=y; select=false">选择</button>
-                            </td>
-                        </tr>
+                        <template v-for="i in x[2]">
+                            <tr>
+                                <td v-text="y"></td>
+                                <td v-text="x[1]"></td>
+                                <td v-text="i.item"></td>
+                                <td v-text="i.num"></td>
+                                <td>
+                                    <button class="set" @click="value.order=y;value.item=i.item;value.num=i.num;value.storage=i.storage;select=false;">选择</button>
+                                </td>
+                            </tr>
+                        </template>
                     </template>
                 </tbody>
             </table>
             <div class="form_info" v-else>未查询到进货单，请重新搜索。</div>
-        </div>
-    </template>
-    <!-- 选择 产品 -->
-    <template v-if="setmode=='产品'">
-        <div class="list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>产品</th>
-                        <th>价格</th>
-                        <th>数量</th>
-                        <th>功能</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template v-for="i in search_return[order][2]">
-                        <tr>
-                            <td v-text="i.item"></td>
-                            <td v-text="i.price"></td>
-                            <td v-text="i.num"></td>
-                            <!-- <td v-text="search_return[n].unit"></td> -->
-                            <!-- <td v-text="search_return[n].price"></td> -->
-                            <td>
-                                <button class="set" @click="value.item=i.item; value.price=i.price; select=false">选择</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
         </div>
     </template>
     <!-- 选择 仓库、库区、货架、储位 -->
@@ -191,8 +145,8 @@
                 <div class="box">
                     <div class="box_row" v-for="x in search_return[3]">
                         <template v-for="y,z in x">
-                        <div class="bow_cell" v-if="y" v-text="z" @click="value.storage=search_return[0] + '-' + z; select=false"></div>
-                        <div class="bow_cell_none" v-else v-text="z" @click="value.storage=search_return[0] + '-' + z; select=false"></div>
+                        <div class="bow_cell" v-if="y" v-text="z" @click="storage_location(z)"></div>
+                        <div class="bow_cell_none" v-else v-text="z" @click="storage_location(z)"></div>
                         </template>
                     </div>
                 </div>
@@ -240,10 +194,9 @@
                 setmode: "", // 选择模式
                 search_value: "", // 搜素内容
                 search_return: "", // 搜素结果
-                order: "", // 单号
                 value: {
+                    order: "", // 单号
                     item: "", // 产品
-                    price: "", // 单价
                     num: "", // 数量
                     storage: "" // 储位
                 },
@@ -263,13 +216,43 @@
                 }
                 axios.get(url)
                     .then(function (response) {
-                        console.log(response)
+                        // console.log(response)
                         that.search_return = response.data
                     })
                     .catch(function (error) {
                         console.log(error)
                     })
                     .finally(function () {})
+            },
+            // 校对储位
+            storage_location(e) {
+                this.value.storage=this.search_return[0] + '-' + e
+                this.select=false
+                let c = false
+                let search_return = JSON.parse(JSON.stringify(this.search_return))
+                for ( i in search_return[4] ) {
+                    if ( e ==  search_return[4][i][0]) {
+                        if (search_return[4][i][1]==this.value.item) {
+                            c = true
+                        }
+                    }
+                }
+                if (!c) {
+                    this.message = {
+                        status: true,
+                        type: "error",
+                        text: "该储位没有 " + this.value.item,
+                    }
+                    this.value.storage = ""
+                    let that = this
+                    setTimeout(function() {
+                        that.message={
+                            status: false,
+                            type: "",
+                            text: "",
+                        }
+                    }, 3000); // 3000 毫秒 = 3 秒
+                }
             },
             // 选择
             sel(e) {
@@ -278,12 +261,30 @@
                 if (e == "purchase") {
                     this.setmode = "进货单"
                 } else if (e == "warehouse") {
-                    this.setmode = "仓库"
+                    if (this.value.item == "") {
+                        this.select = false
+                        this.message = {
+                            status: true,
+                            type: "error",
+                            text: "请先选择进货单",
+                        }
+                        let that = this
+                        setTimeout(function() {
+                            that.message={
+                                status: false,
+                                type: "",
+                                text: "",
+                            }
+                        }, 3000); // 3000 毫秒 = 3 秒
+                    } else {
+                        this.setmode = "仓库"
+                    }
                 }
                 this.search(e)
             },
             // 添加到待提交产品列表
             add(event) {
+                this.message.status=false
                 for (i in this.value) {
                     if (this.value[i] == "") {
                         this.message.status=true
@@ -293,7 +294,6 @@
                     // 如果有错误，弹出错误提示
                     this.message.type="error"
                     this.message.text = "有内容为空，无法添加。"
-                    // 设置一个 2s 的定时器
                     let that = this
                     setTimeout(function() {
                         that.message={
@@ -306,8 +306,8 @@
                     // 如果没有错误则添加到待提交产品列表
                     this.item_list.push(this.value)
                     this.value = {
+                        order: "",
                         item: "",
-                        price: "",
                         num: "",
                         storage: ""
                     }
@@ -325,8 +325,7 @@
                     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                     axios.post("/submit",
                         {
-                            type: 'purchase',
-                            supplier: this.supplier,
+                            type: 'purchase_return',
                             item_list: JSON.stringify(this.item_list)
                         },
                         {
@@ -349,7 +348,7 @@
                             that.message = {
                                 status: true,
                                 type: "info",
-                                text: "入库成功",
+                                text: "出库成功",
                             }
                             setTimeout(function() {
                                 that.message={
@@ -391,10 +390,8 @@
                 } else {
                     this.message.status=true
                     this.message.type="error"
-                    if (this.supplier == '') {
-                        this.message.text = "未选择供应商"
-                    } else if (this.item_list.length == 0) {
-                        this.message.text = "请先添加产品"
+                    if (this.item_list.length == 0) {
+                        this.message.text = "请先添加待退货产品"
                     } else {
                         this.message.text = "其他错误，请联系管理员处理。"
                     }

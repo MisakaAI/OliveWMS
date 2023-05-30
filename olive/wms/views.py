@@ -102,6 +102,43 @@ def submit(request):
                 r = { "status":"success" }
             except Exception as e:
                 r = { "status":"error" ,"info": str(e)}
+        elif request.POST['type'] == "purchase_return":
+            try:
+                item_list = json.loads(request.POST['item_list'])
+                for i in item_list:
+                    storage = i['storage'].split('-')
+                    if len(storage) != 3:
+                        raise RuntimeError('储位 {} 不存在'.format(i['storage']))
+                    else:
+                        for x in storage:
+                            try:
+                                int(x)
+                            except Exception as e:
+                                raise RuntimeError('储位 {} 不存在'.format(i['storage']))
+                    try:
+                        get_shelf = shelf.objects.get(id=int(storage[0]))
+                    except Exception as e:
+                        raise RuntimeError('储位 {} 不存在'.format(i['storage']))
+                    v = storage_location.objects.filter(shelf=get_shelf,row=int(storage[1]),column=int(storage[2]),item=i['item'])
+                    if len(v) == 0:
+                        raise RuntimeError('储位 {} 为空，请选择正确的储位'.format(i['storage']))
+                    else:
+                        item_check = False
+                        for v2 in v:
+                            if v2.item == i["item"]:
+                                item_check = True
+                        if item_check:
+                            print(v2.quantity)
+                            if not v2.quantity >= i["num"]:
+                                raise RuntimeError('储位 {} {} 数量不足，无法完成出库'.format(i['storage'],v2.item))
+                            else:
+                                v2.quantity -= i["num"]
+                                v2.save()
+                                if v2.quantity == 0:
+                                    v2.delete()
+                                r = { "status":"success" }
+            except Exception as e:
+                r = { "status":"error" ,"info": str(e)}
         return JsonResponse(r, safe=False, json_dumps_params={'ensure_ascii': False})
     else:
         return HttpResponse('error. It is not POST')
