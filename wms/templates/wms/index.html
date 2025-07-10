@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/wms.css' %}">
+    <script src="{% static 'js/vue.global.js' %}"></script>
+    <title>Olive WMS</title>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="head">Olive WMS</div>
+    </div>
+</body>
+<script src="{% static 'js/wms.js' %}"></script>
+
+</html>
