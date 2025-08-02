@@ -369,7 +369,10 @@ class InventoryMovement(models.Model):
         ("Production", "领料"),
         ("ProductionReturn", "退料"),
         ("ProductionReceive", "生产"),
-        ("Sale", "销售")("SaleReturn", "销退")("Inventory", "盘点")("Move", "移库"),
+        ("Sale", "销售"),
+        ("SaleReturn", "销退"),
+        ("Inventory", "盘点"),
+        ("Move", "移库"),
     ]
     transaction = models.CharField(
         max_length=20, choices=TRANSACTION_TYPES, verbose_name="事务"
